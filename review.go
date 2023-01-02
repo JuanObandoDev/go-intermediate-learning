@@ -3,7 +3,14 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
+
+func doSomething(c chan int) {
+	time.Sleep(3 * time.Second)
+	fmt.Println("Done")
+	c <- 1
+}
 
 func main() {
 	var x int
@@ -37,4 +44,18 @@ func main() {
 	for i, v := range s {
 		fmt.Println(i, v)
 	}
+
+	// channels
+	c := make(chan int)
+
+	// goroutines
+	go doSomething(c)
+	<-c
+
+	// pointers
+	g := 25
+	fmt.Println(g)
+	h := &g
+	fmt.Println(h)
+	fmt.Println(*h)
 }
