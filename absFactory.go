@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // creating interfaces
-type INorificationFactory interface {
+type INotificationFactory interface {
 	SendNotification()
 	GetSender() ISender
 }
@@ -55,4 +58,34 @@ func (ens EmailNotificationSender) GetSenderMethod() string {
 
 func (ens EmailNotificationSender) GetSenderChannel() string {
 	return "SES"
+}
+
+func getNotificationFactory(notificationType string) (INotificationFactory, error) {
+	notificationType = strings.ToLower(notificationType)
+	if notificationType == "sms" {
+		return &SMSNotification{}, nil
+	} else if notificationType == "email" {
+		return &EmailNotification{}, nil
+	} else {
+		return nil, fmt.Errorf("No notification type found")
+	}
+}
+
+func sendNotification(inf INotificationFactory) {
+	inf.SendNotification()
+}
+
+func getMethod(inf INotificationFactory) {
+	fmt.Println(inf.GetSender().GetSenderMethod())
+}
+
+func main() {
+	smsFactory, _ := getNotificationFactory("SMS")
+	emaiFactory, _ := getNotificationFactory("EMAIL")
+
+	sendNotification(smsFactory)
+	sendNotification(emaiFactory)
+
+	getMethod(smsFactory)
+	getMethod(emaiFactory)
 }
