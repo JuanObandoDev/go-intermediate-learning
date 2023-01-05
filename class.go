@@ -56,6 +56,34 @@ func NewEmployee(id int, vacation bool) *Employee {
 type FullTimeEmployee struct {
 	Person
 	Employee
+	endDate string
+}
+
+// this is equivalent to a method in other languages
+func (fte FullTimeEmployee) getMessage() string {
+	return "Full Time Employee"
+}
+
+// go doesn't use inheritance, but it can be simulated using composition
+type TemporaryEmployee struct {
+	Person
+	Employee
+	taxRate int
+}
+
+// this is equivalent to a method in other languages
+func (te TemporaryEmployee) getMessage() string {
+	return "Temporary Employee"
+}
+
+// this is equivalent to an interface in other languages
+type PrintInfo interface {
+	getMessage() string
+}
+
+// applying polymorphism
+func getMessage(p PrintInfo) {
+	fmt.Println(p.getMessage())
 }
 
 func main() {
@@ -90,4 +118,9 @@ func main() {
 	fte.SetAge(30)
 	fte.SetVacation(false)
 	fmt.Printf("%+v\n", fte)
+
+	// creating a new instance of TemporaryEmployee
+	te := TemporaryEmployee{}
+	getMessage(te)
+	getMessage(fte)
 }
