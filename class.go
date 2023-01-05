@@ -52,7 +52,7 @@ func NewEmployee(id int, vacation bool) *Employee {
 	return &Employee{id, vacation}
 }
 
-// go doesn't use heritance, but it can be simulated using composition
+// go doesn't use inheritance, but it can be simulated using composition
 type FullTimeEmployee struct {
 	Person
 	Employee
